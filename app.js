@@ -37,12 +37,12 @@ module.exports = params => {
       })
     })
   }).
-  then(content => {
-    const promises = []
-    content.toString().split('\n').forEach(line => {
-      if (!line || !line.trim()) return
-
-      promises.push(
+  then(content => Promise.all(
+    content.
+    toString().
+    split('\n').
+    filter(line => line && line.trim()).
+    map(line =>
       get(`${apiUrl}/v1/search`, {
         params: {
           q: line,
@@ -51,11 +51,9 @@ module.exports = params => {
         headers: {
           'Authorization': `Bearer ${userData.access_token}`
         }
-      }))
-    })
-
-    return Promise.all(promises)
-  }).
+      })
+    ))
+  ).
   then(response => {
     const tracks = response.
     filter(r => r.data.tracks.items.length > 0).
@@ -81,7 +79,7 @@ module.exports = params => {
       })
     })
   }).
-  then(response => {
+  then(response =>
     post(`${apiUrl}/v1/users/${userData.id}/playlists/${response.playlistId}/tracks`, {
       uris: response.tracks
     }, {
@@ -90,7 +88,7 @@ module.exports = params => {
         'Authorization': `Bearer ${userData.access_token}`
       }
     })
-  }).
+  ).
   then(response => {
     console.log('done!')
     process.exit()

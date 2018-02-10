@@ -1,0 +1,17 @@
+{
+  "name": "spotify-playlist-import",
+  "version": "1.0.0",
+  "description": "Creates a playlist with given songs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "spotify"
+  ],
+  "author": "Francesco O.",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.17.1"
+  }
+}

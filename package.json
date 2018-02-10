@@ -12,6 +12,7 @@
   "author": "Francesco O.",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.17.1"
+    "axios": "^0.17.1",
+    "minimist": "^1.2.0"
   }
 }

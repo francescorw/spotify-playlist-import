@@ -1,16 +1,26 @@
 #!/usr/bin/node
 
 const http = require('http')
+const fs = require('fs')
 const app = require('./app')
 const querystring = require('querystring')
 const url = require('url')
 
-const port = 22853
-const redirectUri = `http://localhost:${22853}`
+const { port, clientId, clientSecret, inputFile } = require('minimist')(process.argv.slice(2));
+
+if (!port || !clientId || !clientSecret || !inputFile) {
+  console.log('You must provide port, clientId, clientSecret and inputFile')
+  return
+}
+
+if ( !fs.existsSync(inputFile)) {
+  console.log(`${inputFile}: no such file or directory`)
+  return
+}
+
+const redirectUri = `http://localhost:${port}`
 const accountsUrl = 'https://accounts.spotify.com'
 const apiUrl = 'https://api.spotify.com'
-const clientId = process.env.CLIENT_ID
-const clientSecret = process.env.CLIENT_SECRET
 
 const randomState = Math.random() * 999999999999
 
@@ -31,7 +41,7 @@ const callbackServer = http.createServer((req, res) => {
     redirectUri,
     clientId,
     clientSecret,
-    inputFile: 'input.txt'
+    inputFile
   })
 })
 
